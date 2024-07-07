@@ -19,15 +19,15 @@ class Battery
 
     #[ORM\ManyToOne(targetEntity: BatteryType::class, inversedBy: 'batteries')]
     #[ORM\JoinColumn(name: 'type_id', referencedColumnName: 'id')]
-    private \BatteryType $type;
+    private BatteryType $type;
 
     #[ORM\ManyToOne(targetEntity: Bird::class, inversedBy: 'batteries')]
     #[ORM\JoinColumn(name: 'bird_id', referencedColumnName: 'id')]
-    private \Bird $bird;
+    private Bird $bird;
 
     #[ORM\ManyToOne(targetEntity: Place::class, inversedBy: 'batteries')]
     #[ORM\JoinColumn(name: 'place_id', referencedColumnName: 'id')]
-    private \Place $place;
+    private Place $place;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -40,13 +40,13 @@ class Battery
     {
         $this->createdAt = new \DateTimeImmutable();
     }
-    
+
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,6 +84,42 @@ class Battery
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getType(): ?BatteryType
+    {
+        return $this->type;
+    }
+
+    public function setType(?BatteryType $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getBird(): ?Bird
+    {
+        return $this->bird;
+    }
+
+    public function setBird(?Bird $bird): static
+    {
+        $this->bird = $bird;
+
+        return $this;
+    }
+
+    public function getPlace(): ?Place
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?Place $place): static
+    {
+        $this->place = $place;
 
         return $this;
     }

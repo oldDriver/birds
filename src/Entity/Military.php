@@ -6,6 +6,7 @@ use App\Repository\MilitaryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MilitaryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Military
 {
     #[ORM\Id]
@@ -24,7 +25,7 @@ class Military
 
     #[ORM\ManyToOne(targetEntity: Rank::class, inversedBy: 'militaries')]
     #[ORM\JoinColumn(name: 'rank_id', referencedColumnName: 'id', nullable: false)]
-    private \Rank $rank;
+    private Rank $rank;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -93,6 +94,18 @@ class Military
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getRank(): ?Rank
+    {
+        return $this->rank;
+    }
+
+    public function setRank(?Rank $rank): static
+    {
+        $this->rank = $rank;
 
         return $this;
     }
