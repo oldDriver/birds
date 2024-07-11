@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BirdRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BirdRepository::class)]
@@ -56,7 +57,7 @@ class Bird
 
     public function __construct()
     {
-        $this->batteries = new Collection();
+        $this->batteries = new ArrayCollection();
     }
 
     #[ORM\PrePersist]

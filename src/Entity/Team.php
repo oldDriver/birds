@@ -20,7 +20,7 @@ class Team
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'team')]
-    private ArrayCollection $birds;
+    private Collection $birds;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

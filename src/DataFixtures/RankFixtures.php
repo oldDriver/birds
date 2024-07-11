@@ -29,11 +29,13 @@ class RankFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::$ranks as $item) {
+        foreach (self::$ranks as $index => $item) {
             $rank = new Rank();
             $rank->setName($item['name']);
             $rank->setRanking($item['ranking']);
             $manager->persist($rank);
+            $this->setReference('Rank_'.$index, $rank);
+
         }
         $manager->flush();
     }

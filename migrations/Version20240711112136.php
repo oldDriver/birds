@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240707201509 extends AbstractMigration
+final class Version20240711112136 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,6 +31,7 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE rank_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE status_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE team_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE battery (id INT NOT NULL, type_id INT DEFAULT NULL, bird_id INT DEFAULT NULL, place_id INT DEFAULT NULL, serial_number VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D02EF4AEC54C8C93 ON battery (type_id)');
         $this->addSql('CREATE INDEX IDX_D02EF4AEE813F9 ON battery (bird_id)');
@@ -55,7 +56,8 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_426EFD187616678F ON military (rank_id)');
         $this->addSql('COMMENT ON COLUMN military.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN military.updated_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE model (id INT NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE model (id INT NOT NULL, model_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_D79572D97975B7E7 ON model (model_id)');
         $this->addSql('COMMENT ON COLUMN model.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN model.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE place (id INT NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
@@ -73,6 +75,10 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('CREATE TABLE team (id INT NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN team.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN team.updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_USERNAME ON "user" (username)');
+        $this->addSql('COMMENT ON COLUMN "user".created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN "user".updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE battery ADD CONSTRAINT FK_D02EF4AEC54C8C93 FOREIGN KEY (type_id) REFERENCES battery_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE battery ADD CONSTRAINT FK_D02EF4AEE813F9 FOREIGN KEY (bird_id) REFERENCES bird (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE battery ADD CONSTRAINT FK_D02EF4AEDA6A219 FOREIGN KEY (place_id) REFERENCES place (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -82,10 +88,7 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('ALTER TABLE bird ADD CONSTRAINT FK_A0BBAE0E296CD8AE FOREIGN KEY (team_id) REFERENCES team (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE bird ADD CONSTRAINT FK_A0BBAE0EDA6A219 FOREIGN KEY (place_id) REFERENCES place (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE military ADD CONSTRAINT FK_426EFD187616678F FOREIGN KEY (rank_id) REFERENCES rank (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE "user" ADD created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL');
-        $this->addSql('ALTER TABLE "user" ADD updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
-        $this->addSql('COMMENT ON COLUMN "user".created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('COMMENT ON COLUMN "user".updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('ALTER TABLE model ADD CONSTRAINT FK_D79572D97975B7E7 FOREIGN KEY (model_id) REFERENCES make (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -103,6 +106,7 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('DROP SEQUENCE rank_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE status_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE team_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
         $this->addSql('ALTER TABLE battery DROP CONSTRAINT FK_D02EF4AEC54C8C93');
         $this->addSql('ALTER TABLE battery DROP CONSTRAINT FK_D02EF4AEE813F9');
         $this->addSql('ALTER TABLE battery DROP CONSTRAINT FK_D02EF4AEDA6A219');
@@ -112,6 +116,7 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('ALTER TABLE bird DROP CONSTRAINT FK_A0BBAE0E296CD8AE');
         $this->addSql('ALTER TABLE bird DROP CONSTRAINT FK_A0BBAE0EDA6A219');
         $this->addSql('ALTER TABLE military DROP CONSTRAINT FK_426EFD187616678F');
+        $this->addSql('ALTER TABLE model DROP CONSTRAINT FK_D79572D97975B7E7');
         $this->addSql('DROP TABLE battery');
         $this->addSql('DROP TABLE battery_type');
         $this->addSql('DROP TABLE bird');
@@ -123,7 +128,6 @@ final class Version20240707201509 extends AbstractMigration
         $this->addSql('DROP TABLE rank');
         $this->addSql('DROP TABLE status');
         $this->addSql('DROP TABLE team');
-        $this->addSql('ALTER TABLE "user" DROP created_at');
-        $this->addSql('ALTER TABLE "user" DROP updated_at');
+        $this->addSql('DROP TABLE "user"');
     }
 }

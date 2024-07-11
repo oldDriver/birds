@@ -30,7 +30,7 @@ class BatteryType
 
     public function __construct()
     {
-        $this->batteries = new Collection();
+        $this->batteries = new ArrayCollection();
     }
 
     #[ORM\PrePersist]

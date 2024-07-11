@@ -20,10 +20,10 @@ class Place
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'place')]
-    private ArrayCollection $birds;
+    private Collection $birds;
 
     #[ORM\OneToMany(targetEntity: Battery::class, mappedBy: 'place')]
-    private ArrayCollection $batteries;
+    private Collection $batteries;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

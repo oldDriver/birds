@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PositionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PositionRepository::class)]
@@ -17,11 +19,19 @@ class Position
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
+    #[ORM\OneToMany(targetEntity: Military::class, mappedBy: 'position')]
+    private Collection $militaries;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->militaries = new ArrayCollection();
+    }
 
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
@@ -72,6 +82,36 @@ class Position
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Military>
+     */
+    public function getMilitaries(): Collection
+    {
+        return $this->militaries;
+    }
+
+    public function addMilitary(Military $military): static
+    {
+        if (!$this->militaries->contains($military)) {
+            $this->militaries->add($military);
+            $military->setPosition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMilitary(Military $military): static
+    {
+        if ($this->militaries->removeElement($military)) {
+            // set the owning side to null (unless already changed)
+            if ($military->getPosition() === $this) {
+                $military->setPosition(null);
+            }
+        }
 
         return $this;
     }

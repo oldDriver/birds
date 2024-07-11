@@ -20,7 +20,11 @@ class Model
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'model')]
-    private ArrayCollection $birds;
+    private Collection $birds;
+
+    #[ORM\ManyToOne(targetEntity: Make::class, inversedBy: 'models')]
+    #[ORM\JoinColumn(name: 'model_id', referencedColumnName: 'id')]
+    private Make $make;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -114,5 +118,22 @@ class Model
         }
 
         return $this;
+    }
+
+    public function getMake(): ?Make
+    {
+        return $this->make;
+    }
+
+    public function setMake(?Make $make): static
+    {
+        $this->make = $make;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

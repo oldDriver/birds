@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240629204433 extends AbstractMigration
+final class Version20240711150849 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,17 @@ final class Version20240629204433 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_USERNAME ON "user" (username)');
+        $this->addSql('ALTER TABLE military ADD position_id INT NOT NULL');
+        $this->addSql('ALTER TABLE military ADD CONSTRAINT FK_426EFD18DD842E46 FOREIGN KEY (position_id) REFERENCES position (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX IDX_426EFD18DD842E46 ON military (position_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP SEQUENCE "user_id_seq" CASCADE');
-        $this->addSql('DROP TABLE "user"');
+        $this->addSql('ALTER TABLE military DROP CONSTRAINT FK_426EFD18DD842E46');
+        $this->addSql('DROP INDEX IDX_426EFD18DD842E46');
+        $this->addSql('ALTER TABLE military DROP position_id');
     }
 }

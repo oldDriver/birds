@@ -20,7 +20,10 @@ class Make
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'make')]
-    private ArrayCollection $birds;
+    private Collection $birds;
+
+    #[ORM\OneToMany(targetEntity: Model::class, mappedBy: 'make')]
+    private Collection $models;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -31,6 +34,7 @@ class Make
     public function __construct()
     {
         $this->birds = new ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -114,5 +118,40 @@ class Make
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Model>
+     */
+    public function getModels(): Collection
+    {
+        return $this->models;
+    }
+
+    public function addModel(Model $model): static
+    {
+        if (!$this->models->contains($model)) {
+            $this->models->add($model);
+            $model->setMake($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModel(Model $model): static
+    {
+        if ($this->models->removeElement($model)) {
+            // set the owning side to null (unless already changed)
+            if ($model->getMake() === $this) {
+                $model->setMake(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

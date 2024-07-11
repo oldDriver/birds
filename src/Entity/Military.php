@@ -27,11 +27,27 @@ class Military
     #[ORM\JoinColumn(name: 'rank_id', referencedColumnName: 'id', nullable: false)]
     private Rank $rank;
 
+    #[ORM\ManyToOne(targetEntity: Position::class, inversedBy: 'militaries')]
+    #[ORM\JoinColumn(name: 'position_id', referencedColumnName: 'id', nullable: false)]
+    private Position $position;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +122,18 @@ class Military
     public function setRank(?Rank $rank): static
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getPosition(): ?Position
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?Position $position): static
+    {
+        $this->position = $position;
 
         return $this;
     }

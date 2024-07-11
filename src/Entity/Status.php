@@ -23,7 +23,7 @@ class Status
     private bool $isActive = true;
 
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'status')]
-    private ArrayCollection $birds;
+    private Collection $birds;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -129,5 +129,10 @@ class Status
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
