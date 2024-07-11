@@ -19,6 +19,9 @@ class Team
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column]
+    private bool $isActive = true;
+
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'team')]
     private Collection $birds;
 
@@ -112,6 +115,18 @@ class Team
                 $bird->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

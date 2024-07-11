@@ -15,9 +15,10 @@ class MilitaryFixtures extends Fixture implements DependentFixtureInterface
             'middle_name' => 'J.',
             'last_name' => 'USA',
             'rank' => 0,
-            'position' => 4
+            'position' => 4,
         ],
     ];
+
     public function load(ObjectManager $manager): void
     {
         foreach (self::$militaries as $index => $item) {

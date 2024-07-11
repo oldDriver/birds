@@ -32,6 +32,9 @@ class Military
     private Position $position;
 
     #[ORM\Column]
+    private bool $isActive = true;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -134,6 +137,18 @@ class Military
     public function setPosition(?Position $position): static
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

@@ -14,8 +14,9 @@ class PositionFixtures extends Fixture
         'комбат',
         'каптерщик',
         'повар',
-        'оружейник'
+        'оружейник',
     ];
+
     public function load(ObjectManager $manager): void
     {
         foreach (self::$positions as $index => $name) {

@@ -35,7 +35,6 @@ class RankFixtures extends Fixture
             $rank->setRanking($item['ranking']);
             $manager->persist($rank);
             $this->setReference('Rank_'.$index, $rank);
-
         }
         $manager->flush();
     }

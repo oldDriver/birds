@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\BirdRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BirdRepository::class)]
@@ -37,6 +36,9 @@ class Bird
     #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'birds')]
     #[ORM\JoinColumn(name: 'status_id', referencedColumnName: 'id', nullable: false)]
     private Status $status;
+
+    #[ORM\Column]
+    private bool $isActive = true;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'birds')]
     #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'id', nullable: false)]
@@ -235,6 +237,18 @@ class Bird
     public function setPlace(?Place $place): static
     {
         $this->place = $place;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

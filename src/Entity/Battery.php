@@ -21,6 +21,9 @@ class Battery
     #[ORM\JoinColumn(name: 'type_id', referencedColumnName: 'id')]
     private BatteryType $type;
 
+    #[ORM\Column]
+    private bool $isActive = true;
+
     #[ORM\ManyToOne(targetEntity: Bird::class, inversedBy: 'batteries')]
     #[ORM\JoinColumn(name: 'bird_id', referencedColumnName: 'id')]
     private Bird $bird;
@@ -120,6 +123,18 @@ class Battery
     public function setPlace(?Place $place): static
     {
         $this->place = $place;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

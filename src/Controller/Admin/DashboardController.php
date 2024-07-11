@@ -43,11 +43,11 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin/dashboard.html.twig');
     }
 
-         public function configureDashboard(): Dashboard
-         {
-             return Dashboard::new()
-                 ->setTitle('Zoo');
-         }
+    public function configureDashboard(): Dashboard
+    {
+        return Dashboard::new()
+            ->setTitle('Zoo');
+    }
 
     public function configureMenuItems(): iterable
     {

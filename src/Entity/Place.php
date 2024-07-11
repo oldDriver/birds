@@ -19,6 +19,9 @@ class Place
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column]
+    private bool $isActive = true;
+
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'place')]
     private Collection $birds;
 
@@ -146,6 +149,18 @@ class Place
                 $battery->setPlace(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

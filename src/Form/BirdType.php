@@ -29,23 +29,23 @@ class BirdType extends AbstractType
             ])
             ->add('make', EntityType::class, [
                 'class' => Make::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('model', EntityType::class, [
                 'class' => Model::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('status', EntityType::class, [
                 'class' => Status::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('team', EntityType::class, [
                 'class' => Team::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
             ->add('place', EntityType::class, [
                 'class' => Place::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
         ;
     }

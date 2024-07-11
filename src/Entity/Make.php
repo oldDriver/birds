@@ -19,6 +19,9 @@ class Make
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column]
+    private bool $isActive = true;
+
     #[ORM\OneToMany(targetEntity: Bird::class, mappedBy: 'make')]
     private Collection $birds;
 
@@ -153,5 +156,17 @@ class Make
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 }
